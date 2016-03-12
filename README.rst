@@ -15,7 +15,7 @@ Also needed:
 
 ::
 
-pip install pyowm pyspin
+    pip install pyowm pyspin
 
 
 Run
