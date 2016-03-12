@@ -7,7 +7,7 @@ What
 Weather forecast, location, and general information display for the terminal.
 
 Requires
-~~~
+~~~~~~~~
 
 Curses is used to display the output, react to user input, and update on window resizing.
 
@@ -19,7 +19,7 @@ pip install pyowm pyspin
 
 
 Run
-~~~
+~~~~
 
 ::
 
