@@ -93,7 +93,7 @@ class Podaga(object):
 
     def draw(self, window, v, h, string, color):
         window.addstr(0 if v == self.T else self.draw_height/2 if v == self.C else self.draw_height-1,
-                      self.kMARGIN if h == Podaga.L else (self.draw_width/2 - len(string)/2) if h == self.C else
+                      self.kMARGIN if h == self.L else (self.draw_width/2 - len(string)/2) if h == self.C else
                       (self.draw_width - self.kMARGIN - len(string)), string, color)
 
     def view_resized(self):
