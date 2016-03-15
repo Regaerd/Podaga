@@ -48,6 +48,7 @@ setup_d = dict(
     scripts=[script_name],
     keywords=keywords,
     entry_points={'console_scripts': ['podaga=podaga:main']},
+    packages=[''],
 
     **meta
 )
