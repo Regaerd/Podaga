@@ -32,11 +32,10 @@ class Podaga(object):
         self.owm = OWM(API_key=args.api_key)
 
         self.find_location()
-
-        self.loc = self.owm.weather_at_coords(self.location['latitude'], self.location['longitude'])
+        self.location_name = "{}, {}".format(self.location['city'], self.location['region_name'])
+        # self.loc = self.owm.weather_at_coords(self.location['latitude'], self.location['longitude'])
         self.temp_unit = args.temp_unit
         self.temp_symbol = self.temp_unit[0].upper()
-        self.location_name = "{}, {}".format(self.location['city'], self.location['region_name'])
         self.forecast = None
         self.spinner = Spinner(Spin1)
         self.bar_animation = 1
@@ -63,6 +62,7 @@ class Podaga(object):
     def update(self):
         time = int(strftime("%M"))
         if not self.forecast or not self.last_update or self.last_update != time and time % self.kUPDATE_INTERVAL == 0:
+            self.loc = self.owm.weather_at_place(self.location_name)
             self.forecast = self.loc.get_weather()
             self.last_update = time
             self.last_update_timestamp = "Updated: {}".format(strftime(self.kTIMESTAMP_FORMAT))
