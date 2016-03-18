@@ -61,26 +61,29 @@ class Podaga(object):
     def update(self):
         time = int(strftime("%M"))
         if not self.forecast or not self.last_update or self.last_update != time and time % self.kUPDATE_INTERVAL == 0:
-            self.loc = self.owm.weather_at_place(self.location_name)
-            self.forecast = self.loc.get_weather()
-            self.last_update = time
-            self.last_update_timestamp = "Updated: {}".format(strftime(self.kTIMESTAMP_FORMAT))
-
-        animation = self.spinner.next().encode('utf-8')
+            try: # Open Weather Map sometimes fails
+                self.loc = self.owm.weather_at_place(self.location_name)
+                self.forecast = self.loc.get_weather()
+                self.last_update = time
+                self.last_update_timestamp = "Updated: {}".format(strftime(self.kTIMESTAMP_FORMAT))
+            except: pass
 
         for window in self.windows: window.box()
 
-        self.draw(self.win_l, self.T, self.L, self.location_name, self.color_pri)
+        animation = self.spinner.next()
         self.draw(self.win_l, self.T, self.R, animation, self.color_ext)
-        self.draw(self.win_l, self.B, self.L, self.forecast.get_detailed_status().capitalize(), self.color_sec)
-
-        self.draw(self.win_c, self.T, self.C, "{} °{}".format(self.forecast.get_temperature(self.temp_unit)["temp"], self.temp_symbol), self.color_pri)
-        self.draw(self.win_c, self.B, self.L, "{} m/s".format(self.forecast.get_wind()["speed"]), self.color_sec)
-        self.draw(self.win_c, self.B, self.R, "{} %".format(self.forecast.get_humidity()), self.color_sec)
-
-        self.draw(self.win_r, self.T, self.R, self.location['ip'], self.color_pri)
         self.draw(self.win_r, self.T, self.L, animation, self.color_ext)
-        self.draw(self.win_r, self.B, self.R, self.last_update_timestamp, self.color_sec)
+
+        if (self.forecast): # we won't have a forecast if owm fails on the initial call
+            self.draw(self.win_l, self.T, self.L, self.location_name, self.color_pri)
+            self.draw(self.win_l, self.B, self.L, self.forecast.get_detailed_status().capitalize(), self.color_sec)
+
+            self.draw(self.win_c, self.T, self.C, "{} °{}".format(self.forecast.get_temperature(self.temp_unit)["temp"], self.temp_symbol), self.color_pri)
+            self.draw(self.win_c, self.B, self.L, "{} m/s".format(self.forecast.get_wind()["speed"]), self.color_sec)
+            self.draw(self.win_c, self.B, self.R, "{} %".format(self.forecast.get_humidity()), self.color_sec)
+
+            self.draw(self.win_r, self.T, self.R, self.location['ip'], self.color_pri)
+            self.draw(self.win_r, self.B, self.R, self.last_update_timestamp, self.color_sec)
 
         for window in self.windows: window.refresh()
 
