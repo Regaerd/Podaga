@@ -42,6 +42,7 @@ class Podaga(object):
         self.bar_animation = 1
         self.last_update = None
         self.verbose = False
+        self.error = ""
 
         try: # needed for terminals that don't support all color options
             for i in range(256):
@@ -66,7 +67,8 @@ class Podaga(object):
                 self.forecast = self.loc.get_weather()
                 self.last_update = time
                 self.last_update_timestamp = "Updated: {}".format(strftime(self.kTIMESTAMP_FORMAT))
-            except: pass
+            except Exception, e:
+                self.error = e.message
 
         for window in self.windows: window.box()
 
@@ -84,6 +86,8 @@ class Podaga(object):
 
             self.draw(self.win_r, self.T, self.R, self.location['ip'], self.color_pri)
             self.draw(self.win_r, self.B, self.R, self.last_update_timestamp, self.color_sec)
+        else:
+            self.draw_error(self.stdscr, self.error)
 
         for window in self.windows: window.refresh()
 
@@ -97,6 +101,10 @@ class Podaga(object):
         window.addstr(0 if v == self.T else self.draw_height/2 if v == self.C else self.draw_height-1,
                       self.kMARGIN if h == self.L else (self.draw_width/2 - len(string)/2) if h == self.C else
                       (self.draw_width - self.kMARGIN - len(string)), string, color)
+
+    def draw_error(self, window, string):
+        string = self.error[:self.width-4] + (self.error[self.width-4:] and '..')
+        window.addstr(self.draw_height-1, self.width/2 - len(string)/2, string)
 
     def view_resized(self):
         self.stdscr.clear()
