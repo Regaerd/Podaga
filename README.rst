@@ -1,6 +1,8 @@
 Podaga
 =======
 
+.. image:: https://cloud.githubusercontent.com/assets/8732474/14165481/5a31461e-f6d7-11e5-9e29-22dc082fcb8c.gif
+
 What
 ~~~~
 
