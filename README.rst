@@ -1,7 +1,7 @@
 Podaga
 =======
 
-.. image:: https://cloud.githubusercontent.com/assets/8732474/14165481/5a31461e-f6d7-11e5-9e29-22dc082fcb8c.gif
+.. image:: https://cloud.githubusercontent.com/assets/8732474/14165527/f62d3f96-f6d7-11e5-8c34-dc28f70e2721.gif
 
 What
 ~~~~
